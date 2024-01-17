@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6y$f#7m5cl3n%&*c)!vx%0u_a=h&!fzo$bi#3vh4w(rxp+4lho
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app' , 'localhost']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'corsheaders',
     'rest_framework',
     'aniresfr',
@@ -102,6 +103,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 CORS_ORIGIN_WHITELIST = [
      'http://localhost:3000'
