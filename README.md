@@ -5,15 +5,15 @@ clone the repo
 
 ## Install the requirements:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+pip install -r requirements.txt
+```
 
 Apply the migrations:
 
-    ```bash
-    python manage.py migrate
-    ```
+```bash
+python manage.py migrate
+```
 
 ## Running the Project
 
