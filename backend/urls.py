@@ -23,13 +23,10 @@ from aniresfr import views
 router = routers.DefaultRouter()
 router.register(r'animals', views.AnimalView, 'animal')
 
-
-
-    
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('login/', views.LoginView.as_view(), name='login'),
+    path('user/', views.UserView.as_view(), name='user')
 ]
