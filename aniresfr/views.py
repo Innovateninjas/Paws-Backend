@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -37,6 +37,8 @@ class RegisterView(APIView):
         phoneNumber = request.data.get('phoneNumber')
         email = request.data.get('email')
         password = request.data.get('password')
+        user_type = request.data.get('userType')
+
 
         if not fullName or not phoneNumber or not email or not password:
             return Response({'error': 'fullName, phoneNumber, email, and password are required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -45,4 +47,11 @@ class RegisterView(APIView):
             return Response({'error': 'Email is already in use'}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.create_user(username=email, email=email, password=password, first_name=fullName, last_name=phoneNumber)
+
+        # Get or create the group
+        group, created = Group.objects.get_or_create(name=user_type)
+
+        # Add the user to the group
+        group.user_set.add(user)
+
         return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
