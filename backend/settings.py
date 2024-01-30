@@ -120,8 +120,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://aniresfr.vercel.app'
-    'https://aniresfr-rishi-04.vercel.app'
+    'https://aniresfr.vercel.app',
+    'https://aniresfr-rishi-04.vercel.app',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
