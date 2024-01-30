@@ -11,7 +11,7 @@ class Animal(models.Model):
     image = models.CharField(max_length=200)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    numberOfAnimals = models.IntegerField()
+    numberOfAnimals = models.CharField(max_length=15)
     address = models.CharField(max_length=500)
     landmark = models.CharField(max_length=200)
     status = models.CharField(max_length=50)
