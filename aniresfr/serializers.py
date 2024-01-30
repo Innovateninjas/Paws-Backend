@@ -6,8 +6,8 @@ class AnimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Animal
         fields = ('id', 'user_name', 'user_email', 'user_phone', 
-                  'animal_type', 'description', 'condition',
-                  'image', 'latitude', 'longitude', 'landmark',
+                  'animal_type', 'numberOfAnimals', 'description', 'condition',
+                  'image', 'latitude', 'longitude','address', 'landmark',
                   'status')
 
 
