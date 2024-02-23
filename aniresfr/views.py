@@ -37,7 +37,7 @@ class RegisterView(APIView):
         phoneNumber = request.data.get('phoneNumber')
         email = request.data.get('email')
         password = request.data.get('password')
-        user_type = request.data.get('userType')
+        #user_type = request.data.get('userType')
 
 
         if not fullName or not phoneNumber or not email or not password:
@@ -49,9 +49,9 @@ class RegisterView(APIView):
         user = User.objects.create_user(username=email, email=email, password=password, first_name=fullName, last_name=phoneNumber)
 
         # Get or create the group
-        group, created = Group.objects.get_or_create(name=user_type)
+        #group, created = Group.objects.get_or_create(name=user_type)
 
         # Add the user to the group
-        group.user_set.add(user)
+        #group.user_set.add(user)
 
         return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
