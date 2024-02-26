@@ -1,17 +1,20 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Animal
+from .models import Animal, NgoUser, CustomUser
+
 
 class AnimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Animal
-        fields = ('id', 'user_name', 'user_email', 'user_phone', 
-                  'animal_type', 'numberOfAnimals', 'description', 'condition',
-                  'image', 'latitude', 'longitude','address', 'landmark',
-                  'status')
+        fields = '__all__'
 
 
-class UserSerializer(serializers.ModelSerializer):
+class NgoUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name')
+        model = NgoUser
+        fields = '__all__'
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'

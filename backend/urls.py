@@ -20,13 +20,18 @@ from rest_framework import routers
 from aniresfr import views
 
 
+
 router = routers.DefaultRouter()
 router.register(r'animals', views.AnimalView, 'animal')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('register/', views.RegisterView.as_view(), name='register'),
-    path('login/', views.LoginView.as_view(), name='login'),
-    path('user/', views.UserView.as_view(), name='user')
+    path('api/customuser/register/', views.CustomUserRegistration.as_view(), name='customuser-register'),
+    path('api/customuser/login/', views.CustomUserLogin.as_view(), name='customuser-login'),
+    path('api/customuser/info', views.CustomUserView.as_view(), name='customuser-info'),
+    path('api/ngouser/register/', views.NgoUserRegistration.as_view(), name='ngouser-register'),
+    path('api/ngouser/login/', views.NgoUserLogin.as_view(), name='ngouser-login'),
+    path('api/ngouser/info', views.NgoUserView.as_view(), name='ngouser-info'),
 ]
