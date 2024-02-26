@@ -85,10 +85,10 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "paws",
-        'USER': "rishi",
-        'PASSWORD': "Anirbanback3nd!",
-        'HOST': "paws.postgres.database.azure.com",
+        'NAME': "verceldb",
+        'USER': "default",
+        'PASSWORD': "pUkWcPu2Dqw3",
+        'HOST': "ep-wispy-mud-64585382-pooler.ap-southeast-1.postgres.vercel-storage.com",
     }
 }
 
@@ -148,9 +148,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Default Django authentication backend
-    'aniresfr.backends.CustomUserBackend',  # Custom backend for CustomUser
-    'aniresfr.backends.NgoUserBackend',  # Custom backend for NgoUser
-]
