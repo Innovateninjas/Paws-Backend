@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Animal, BaseUser, NgoUser, CustomUser
+from .models import Animal, BaseUser, NgoUser, CustomUser, Campaign
 
 class AnimalAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_name', 'user_email', 'user_phone', 
@@ -7,7 +7,14 @@ class AnimalAdmin(admin.ModelAdmin):
                   'condition', 'image', 'latitude', 'longitude',
                   'address', 'landmark', 'status', 'reported_time',
                   'response_time', 'assigned_to')
-    
+
+
+class CampaignAdmin(admin.ModelAdmin):
+    list_display = ('ngo_name', 'title', 'description', 'tags', 'phone_number', 
+                  'email', 'start_date', 'end_date', 'application_deadline', 
+                  'age_group', 'image_link', 'is_over', 'campaign_id', 'applicant_list')
+
+
 class BaseUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'phone_number', 'is_ngo', 'is_active', 
                     'is_staff', 'is_superuser', 'date_joined')
