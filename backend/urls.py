@@ -24,9 +24,11 @@ router = routers.DefaultRouter()
 router.register(r'animals', views.AnimalView, 'animal')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('register/', views.RegisterView.as_view(), name='register'),
+    path('register/user', views.CustomUserRegistration.as_view(), name='register user'),
+    path('register/ngo', views.NgoUserRegistration.as_view(), name='register ngo'),
+    path('info/user/', views.CustomUserView.as_view(), name='user info'),
+    path('info/ngo/', views.NgoUserView.as_view(), name='ngo info'),
     path('login/', views.LoginView.as_view(), name='login'),
-    path('user/', views.UserView.as_view(), name='user')
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls), name='Animal API'),
 ]
