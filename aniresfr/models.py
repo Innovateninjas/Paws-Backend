@@ -88,6 +88,7 @@ class NgoUser(models.Model):
 
 class CustomUser(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE, primary_key=True)
+    applied_campaigns = ArrayField(models.IntegerField(), blank=True, default=list)
     level = models.IntegerField(default=1)
     coins = models.IntegerField(default=0)
 
