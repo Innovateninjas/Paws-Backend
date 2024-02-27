@@ -22,6 +22,7 @@ from aniresfr import views
 
 router = routers.DefaultRouter()
 router.register(r'animals', views.AnimalView, 'animal')
+router.register(r'campaigns', views.CampaignView, 'campaign')
 
 urlpatterns = [
     path('register/user', views.CustomUserRegistration.as_view(), name='register user'),

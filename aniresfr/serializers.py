@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Animal, NgoUser, CustomUser
+from .models import Animal, NgoUser, CustomUser, Campaign
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -9,13 +9,22 @@ class AnimalSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_name', 'user_email', 'user_phone', 
                   'animal_type', 'numberOfAnimals', 'description', 
                   'condition', 'image', 'latitude', 'longitude',
-                  'address', 'landmark', 'status', 'timestamp']
+                  'address', 'landmark', 'status', 'reported_time',
+                  'response_time', 'assigned_to']
+
+
+class CampaignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campaign
+        fields = ['ngo_name', 'title', 'description', 'tags', 'phone_number', 
+                  'email', 'start_date', 'end_date', 'application_deadline', 
+                  'age_group', 'image_link', 'is_over', 'campaign_id', 'applicant_list']
 
 
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['email', 'name', 'phone_number', 'is_ngo']
+        fields = ['email', 'name', 'phone_number', 'is_ngo', 'date_joined']
 
 
 class CustomUserSerializer(serializers.ModelSerializer):

@@ -5,13 +5,21 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, viewsets
-from .serializers import AnimalSerializer, CustomUserSerializer, NgoUserSerializer
-from .models import Animal, CustomUser, NgoUser
+from .serializers import AnimalSerializer, CustomUserSerializer, NgoUserSerializer, CampaignSerializer
+from .models import Animal, CustomUser, NgoUser, Campaign
+
 
 class AnimalView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
+
+
+class CampaignView(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = CampaignSerializer
+    queryset = Campaign.objects.all()
+
 
 class LoginView(APIView):
     permission_classes = [AllowAny]

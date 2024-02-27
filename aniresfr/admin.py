@@ -2,10 +2,11 @@ from django.contrib import admin
 from .models import Animal, BaseUser, NgoUser, CustomUser
 
 class AnimalAdmin(admin.ModelAdmin):
-    list_display = ('user_name', 'user_email', 'user_phone', 
-                  'animal_type','numberOfAnimals', 'description', 'condition',
-                  'image', 'latitude', 'longitude','address', 'landmark',
-                  'status', 'timestamp')
+    list_display = ('id', 'user_name', 'user_email', 'user_phone', 
+                  'animal_type', 'numberOfAnimals', 'description', 
+                  'condition', 'image', 'latitude', 'longitude',
+                  'address', 'landmark', 'status', 'reported_time',
+                  'response_time', 'assigned_to')
     
 class BaseUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'phone_number', 'is_ngo', 'is_active', 
