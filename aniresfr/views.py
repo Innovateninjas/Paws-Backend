@@ -34,7 +34,8 @@ class LoginView(APIView):
         password = request.data.get("password")
         user = authenticate(username=username, password=password)
         if user:
-            return Response({'token': get_token(user)}, status=status.HTTP_200_OK)
+            data={'token': get_token(user), 'is_ngo': user.is_ngo}
+            return Response(data, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Wrong Email or password"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -44,8 +45,8 @@ class CustomUserView(APIView):
     def get(self, request):
         custom_user = CustomUser.objects.select_related('user').get(user__email=request.user.email)
         serializer = CustomUserSerializer(custom_user).data
-        res = serializer.pop('user') | serializer
-        return Response(res, status=status.HTTP_200_OK)
+        data = serializer.pop('user') | serializer
+        return Response(data, status=status.HTTP_200_OK)
     
     
 class NgoUserView(APIView):
@@ -53,8 +54,8 @@ class NgoUserView(APIView):
     def get(self, request):
         ngo_user = NgoUser.objects.select_related('user').get(user__email=request.user.email)
         serializer = NgoUserSerializer(ngo_user).data
-        res = serializer.pop('user') | serializer
-        return Response(res, status=status.HTTP_200_OK)
+        data = serializer.pop('user') | serializer
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class CustomUserRegistration(APIView):
