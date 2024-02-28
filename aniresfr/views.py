@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.db import IntegrityError
+from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
@@ -7,6 +8,11 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets
 from .serializers import AnimalSerializer, CustomUserSerializer, NgoUserSerializer, CampaignSerializer
 from .models import Animal, CustomUser, NgoUser, Campaign
+
+
+def get_token(user):
+    token, _ = Token.objects.get_or_create(user=user)
+    return token.key
 
 
 class AnimalView(viewsets.ModelViewSet):
@@ -28,8 +34,7 @@ class LoginView(APIView):
         password = request.data.get("password")
         user = authenticate(username=username, password=password)
         if user:
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+            return Response({'token': get_token(user)}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Wrong Email or password"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -37,7 +42,8 @@ class LoginView(APIView):
 class CustomUserView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        serializer = CustomUserSerializer(CustomUser.objects.get(user__email=request.user.email)).data
+        custom_user = CustomUser.objects.select_related('user').get(user__email=request.user.email)
+        serializer = CustomUserSerializer(custom_user).data
         res = serializer.pop('user') | serializer
         return Response(res, status=status.HTTP_200_OK)
     
@@ -45,7 +51,8 @@ class CustomUserView(APIView):
 class NgoUserView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        serializer = NgoUserSerializer(NgoUser.objects.get(user__email=request.user.email)).data
+        ngo_user = NgoUser.objects.select_related('user').get(user__email=request.user.email)
+        serializer = NgoUserSerializer(ngo_user).data
         res = serializer.pop('user') | serializer
         return Response(res, status=status.HTTP_200_OK)
 
@@ -55,12 +62,14 @@ class CustomUserRegistration(APIView):
 
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
-        if serializer.is_valid():
+        try:
+            serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            if user:
-                token, _ = Token.objects.get_or_create(user=user.user)
-                return Response({'token': token.key}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'token': get_token(user.user)}, status=status.HTTP_201_CREATED)
+        except IntegrityError:
+            raise ValidationError({'error': 'The account with that Email already exists. Please Login.'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class NgoUserRegistration(APIView):
@@ -68,9 +77,11 @@ class NgoUserRegistration(APIView):
 
     def post(self, request):
         serializer = NgoUserSerializer(data=request.data)
-        if serializer.is_valid():
+        try:
+            serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            if user:
-                token, _ = Token.objects.get_or_create(user=user.user)
-                return Response({'token': token.key}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'token': get_token(user.user)}, status=status.HTTP_201_CREATED)
+        except IntegrityError:
+            raise ValidationError({'error': 'The account with that Email already exists. Please Login.'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
