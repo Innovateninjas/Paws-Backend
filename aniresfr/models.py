@@ -81,6 +81,7 @@ class NgoUser(models.Model):
     address = models.CharField(max_length=500, default='')
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
+    no_received_reports = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.name
@@ -88,6 +89,7 @@ class NgoUser(models.Model):
 
 class CustomUser(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE, primary_key=True)
+    no_reports = models.IntegerField(default=0)
     applied_campaigns = ArrayField(models.IntegerField(), blank=True, default=list)
     level = models.IntegerField(default=1)
     coins = models.IntegerField(default=0)

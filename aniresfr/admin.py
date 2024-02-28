@@ -21,10 +21,10 @@ class BaseUserAdmin(admin.ModelAdmin):
 
 class NgoUserAdmin(admin.ModelAdmin):
     list_display = ('user', 'emergency_contact_number', 'animals_supported',
-                    'website', 'address', 'latitude', 'longitude')
+                    'website', 'address', 'latitude', 'longitude', 'no_received_reports')
     
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('user', 'level', 'coins')
+    list_display = ('user', 'no_reports', 'level', 'coins')
     
 
 
@@ -32,3 +32,4 @@ admin.site.register(Animal, AnimalAdmin)
 admin.site.register(BaseUser, BaseUserAdmin)
 admin.site.register(NgoUser, NgoUserAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Campaign, CampaignAdmin)
