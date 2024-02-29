@@ -21,10 +21,10 @@ class BaseUserAdmin(admin.ModelAdmin):
 
 class NgoUserAdmin(admin.ModelAdmin):
     list_display = ('user', 'emergency_contact_number', 'animals_supported',
-                    'website', 'address', 'latitude', 'longitude', 'no_received_reports')
+                    'website', 'address', 'latitude', 'longitude', 'no_received_reports', 'created_campaigns_id')
     
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('user', 'no_reports', 'level', 'coins')
+    list_display = ('user', 'no_reports', 'level', 'coins', 'applied_campaigns')
     
 
 

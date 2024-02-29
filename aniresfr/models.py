@@ -82,6 +82,7 @@ class NgoUser(models.Model):
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
     no_received_reports = models.IntegerField(default=0)
+    created_campaigns_id = ArrayField(models.IntegerField(), blank=True, default=list)
 
     def __str__(self):
         return self.user.name

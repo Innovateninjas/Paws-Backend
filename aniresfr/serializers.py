@@ -37,7 +37,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['user', 'email', 'name', 'phone_number',
-                   'password', 'level', 'coins', 'no_reports']
+                   'password', 'level', 'coins', 'no_reports',
+                   'applied_campaigns']
 
     def create(self, validated_data):
         BaseUser = get_user_model()
@@ -63,7 +64,8 @@ class NgoUserSerializer(serializers.ModelSerializer):
         fields = ['user', 'email', 'name', 'phone_number', 
                   'password', 'emergency_contact_number', 
                   'animals_supported', 'website', 'address', 
-                  'latitude', 'longitude', 'no_received_reports']
+                  'latitude', 'longitude', 'no_received_reports',
+                  'created_campaigns_id']
 
     def create(self, validated_data):
         BaseUser = get_user_model()
