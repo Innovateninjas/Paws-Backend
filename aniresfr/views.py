@@ -1,11 +1,12 @@
 from django.db import IntegrityError
+from regex import P
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, filters
 from .serializers import AnimalSerializer, CustomUserSerializer, NgoUserSerializer, CampaignSerializer
 from .models import Animal, CustomUser, NgoUser, Campaign
 
@@ -18,7 +19,18 @@ def get_token(user):
 class AnimalView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = AnimalSerializer
-    queryset = Animal.objects.all()
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `user_email` query parameter in the URL.
+        """
+        queryset =Animal.objects.all()
+        user_email = self.request.query_params.get('user_email')
+        if user_email is not None:
+            queryset = queryset.filter(user_email=user_email)
+        return queryset
+
+
 
 
 class CampaignView(viewsets.ModelViewSet):
