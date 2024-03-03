@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'paws',
         'USER': 'rishi',
         'PASSWORD': 'Anirbanback3nd!',
-        'HOST': 'paws.postgres.database.azure.com',
+        'HOST': 'pawss.postgres.database.azure.com',
     }
 }
 

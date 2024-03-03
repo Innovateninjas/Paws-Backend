@@ -54,20 +54,47 @@ class LoginView(APIView):
 
 class CustomUserView(APIView):
     permission_classes = [IsAuthenticated]
+    def get_object(self):
+        return CustomUser.objects.get(user__email=self.request.user.email)
+    
+    def get_data(self, serializer):
+        info = serializer.data
+        data = info.pop('user') | info
+        return data
+
     def get(self, request):
-        custom_user = CustomUser.objects.select_related('user').get(user__email=request.user.email)
-        serializer = CustomUserSerializer(custom_user).data
-        data = serializer.pop('user') | serializer
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = CustomUserSerializer(self.get_object())
+        return Response(self.get_data(serializer), status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        serializer = CustomUserSerializer(self.get_object(), data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(self.get_data(serializer), status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 class NgoUserView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return NgoUser.objects.select_related('user').get(user__email=self.request.user.email)
+    
+    def get_data(self, serializer):
+        info = serializer.data
+        data = info.pop('user') | info
+        return data
+    
     def get(self, request):
-        ngo_user = NgoUser.objects.select_related('user').get(user__email=request.user.email)
-        serializer = NgoUserSerializer(ngo_user).data
-        data = serializer.pop('user') | serializer
-        return Response(data, status=status.HTTP_200_OK)
+        serializer = NgoUserSerializer(self.get_object())
+        return Response(self.get_data(serializer), status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        serializer = NgoUserSerializer(self.get_object(), data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(self.get_data(serializer), status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomUserRegistration(APIView):
