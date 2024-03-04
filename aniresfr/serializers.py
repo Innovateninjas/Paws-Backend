@@ -1,4 +1,5 @@
 from .models import *
+from django.db.models import F
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from math import radians, cos, sin, sqrt, atan2
@@ -30,6 +31,8 @@ class AnimalSerializer(serializers.ModelSerializer):
                 print(nearest_ngo.user.email, distance)
         if nearest_ngo is not None:
             animal.assigned_to = nearest_ngo.user.email
+            nearest_ngo.no_received_reports = F('no_received_reports') + 1
+            nearest_ngo.save(update_fields=['no_received_reports'])
             animal.save()
         return animal
 
