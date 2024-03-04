@@ -116,7 +116,11 @@ class NgoView(APIView):
     def get(self, request):
         email = request.query_params.get('email')
         if not email:
-            return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+            list = []
+            for ngo_user in NgoUser.objects.select_related('user').all():
+                serializer = NgoUserSerializer(ngo_user)
+                list.append(self.get_data(serializer))
+            return Response(list, status=status.HTTP_200_OK)
         ngo_user = self.get_object(email)
         serializer = NgoUserSerializer(ngo_user)
         return Response(self.get_data(serializer), status=status.HTTP_200_OK)
