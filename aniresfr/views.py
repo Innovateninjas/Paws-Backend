@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from regex import P
 from rest_framework.exceptions import ValidationError
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets, filters
 from .serializers import AnimalSerializer, CustomUserSerializer, NgoUserSerializer, CampaignSerializer
 from .models import Animal, CustomUser, NgoUser, Campaign
+from django.shortcuts import get_object_or_404
 
 
 def get_token(user):
@@ -20,17 +21,15 @@ class AnimalView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = AnimalSerializer
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `user_email` query parameter in the URL.
-        """
         queryset =Animal.objects.all()
-        user_email = self.request.query_params.get('user_email')
+        user_email = self.request.query_params.get('user_email', None)
+        assigned_to = self.request.query_params.get('assigned_to', None)
+
         if user_email is not None:
             queryset = queryset.filter(user_email=user_email)
+        if assigned_to is not None:
+            queryset = queryset.filter(assigned_to=assigned_to)
         return queryset
-
-
 
 
 class CampaignView(viewsets.ModelViewSet):
@@ -51,6 +50,14 @@ class LoginView(APIView):
         else:
             return Response({"error": "Wrong Email or password"}, status=status.HTTP_400_BAD_REQUEST)
         
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        logout(request)
+        return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
+    
 
 class CustomUserView(APIView):
     permission_classes = [IsAuthenticated]
@@ -97,19 +104,38 @@ class NgoUserView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class NgoView(APIView):
+    permission_classes = [AllowAny]
+
+    def get_object(self, email):
+        return get_object_or_404(NgoUser, user__email=email)
+
+    def get_data(self, serializer):
+        info = serializer.data
+        data = info.pop('user') | info
+        return data
+
+    def get(self, request):
+        email = request.query_params.get('email')
+        if not email:
+            return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        ngo_user = self.get_object(email)
+        serializer = NgoUserSerializer(ngo_user)
+        return Response(self.get_data(serializer), status=status.HTTP_200_OK)
+
+
 class CustomUserRegistration(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            serializer.is_valid(raise_exception=True)
             user = serializer.save()
             return Response({'token': get_token(user.user)}, status=status.HTTP_201_CREATED)
         except IntegrityError:
             raise ValidationError({'error': 'The account with that Email already exists. Please Login.'})
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class NgoUserRegistration(APIView):
@@ -117,11 +143,10 @@ class NgoUserRegistration(APIView):
 
     def post(self, request):
         serializer = NgoUserSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            serializer.is_valid(raise_exception=True)
             user = serializer.save()
             return Response({'token': get_token(user.user)}, status=status.HTTP_201_CREATED)
         except IntegrityError:
             raise ValidationError({'error': 'The account with that Email already exists. Please Login.'})
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

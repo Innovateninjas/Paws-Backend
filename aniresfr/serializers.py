@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Animal, NgoUser, CustomUser, Campaign
+from math import radians, cos, sin, sqrt, atan2
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -11,6 +12,26 @@ class AnimalSerializer(serializers.ModelSerializer):
                   'condition', 'image', 'latitude', 'longitude',
                   'address', 'landmark', 'status', 'reported_time',
                   'response_time', 'assigned_to']
+        
+    def create(self, validated_data):
+        animal = Animal.objects.create(**validated_data)
+        ngos = NgoUser.objects.all()
+        min_distance = None
+        nearest_ngo = None
+        for ngo in ngos:
+            dlon = radians(ngo.longitude) - radians(animal.longitude)
+            dlat = radians(ngo.latitude) - radians(animal.latitude)
+            a = sin(dlat / 2)**2 + cos(radians(animal.latitude)) * cos(radians(ngo.latitude)) * sin(dlon / 2)**2
+            c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            distance = 6371.01 * c
+            if min_distance is None or distance < min_distance:
+                min_distance = distance
+                nearest_ngo = ngo
+                print(nearest_ngo.user.email, distance)
+        if nearest_ngo is not None:
+            animal.assigned_to = nearest_ngo.user.email
+            animal.save()
+        return animal
 
 
 class CampaignSerializer(serializers.ModelSerializer):
