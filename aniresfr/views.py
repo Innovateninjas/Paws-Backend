@@ -1,15 +1,13 @@
 from django.db import IntegrityError
-from regex import P
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate, logout
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status, viewsets, filters
-from .serializers import AnimalSerializer, CustomUserSerializer, NgoUserSerializer, CampaignSerializer
-from .models import Animal, CustomUser, NgoUser, Campaign
-from django.shortcuts import get_object_or_404
+from rest_framework import status, viewsets
+from .serializers import *
+from .models import *
 
 
 def get_token(user):
@@ -108,7 +106,7 @@ class NgoView(APIView):
     permission_classes = [AllowAny]
 
     def get_object(self, email):
-        return get_object_or_404(NgoUser, user__email=email)
+        return NgoUser.objects.select_related('user').get(user__email=email)
 
     def get_data(self, serializer):
         info = serializer.data

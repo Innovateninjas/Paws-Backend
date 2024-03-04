@@ -29,3 +29,14 @@ class AnimalViewTest(TestCase):
         response = self.client.post(reverse('animal-list'), self.animal_data, format='json')
         print(response.content.decode('utf-8'))
         self.assertEqual(response.status_code, 201)
+
+class NgoViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = BaseUser.objects.create_user(email='testuser@example.com', password='testpass', name = 'testuser', phone_number = '1234567890')
+        self.ngo_user = NgoUser.objects.create(user=self.user, latitude=22.0, longitude=89.0)
+
+    def test_get_ngo_user(self):
+        response = self.client.get(reverse('ngo'), {'email': 'testuser@example.com'})
+        print(response.content.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)

@@ -1,6 +1,6 @@
+from .models import *
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Animal, NgoUser, CustomUser, Campaign
 from math import radians, cos, sin, sqrt, atan2
 
 
