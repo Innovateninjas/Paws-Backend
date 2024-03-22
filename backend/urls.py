@@ -32,6 +32,6 @@ urlpatterns = [
     path('ngo', views.NgoView.as_view(), name='ngo'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('api/', include(router.urls)),
-    path('', admin.site.urls),
+    path('admin/', admin.site.urls),
 
 ]
