@@ -25,7 +25,6 @@ router.register(r'animals', views.AnimalView, 'animal')
 router.register(r'campaigns', views.CampaignView, 'campaign')
 
 urlpatterns = [
-    path('', admin.site.urls),
     path('register/user', views.CustomUserRegistration.as_view(), name='register user'),
     path('register/ngo', views.NgoUserRegistration.as_view(), name='register ngo'),
     path('info/user/', views.CustomUserView.as_view(), name='user info'),
@@ -33,4 +32,6 @@ urlpatterns = [
     path('ngo', views.NgoView.as_view(), name='ngo'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('api/', include(router.urls)),
+    path('', admin.site.urls),
+
 ]
