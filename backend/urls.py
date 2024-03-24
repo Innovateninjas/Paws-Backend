@@ -29,6 +29,7 @@ urlpatterns = [
     path('register/ngo', views.NgoUserRegistration.as_view(), name='register ngo'),
     path('info/user/', views.CustomUserView.as_view(), name='user info'),
     path('info/ngo/', views.NgoUserView.as_view(), name='ngo info'),
+    path('change_password/', views.ChangePasswordView.as_view(), name='change_password'),
     path('ngo', views.NgoView.as_view(), name='ngo details'),
     path('nearest_ngo', views.NearestNgoView.as_view(), name='nearest ngo'),
     path('login/', views.LoginView.as_view(), name='login'),

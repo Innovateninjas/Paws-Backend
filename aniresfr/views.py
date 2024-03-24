@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.contrib.auth.hashers import make_password
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate, logout
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -88,6 +89,24 @@ class LogoutView(APIView):
         logout(request)
         return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
     
+
+class ChangePasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get("email")
+        phone_number = request.data.get("phone_number")
+        new_password = request.data.get("new_password")
+
+        try:
+            user = BaseUser.objects.get(email=email, phone_number=phone_number)
+        except BaseUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        user.password = make_password(new_password)
+        user.save()
+
+        return Response({"message": "Password changed successfully"}, status=status.HTTP_200_OK)
 
 class CustomUserView(APIView):
     permission_classes = [IsAuthenticated]
