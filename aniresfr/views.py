@@ -35,6 +35,38 @@ class CampaignView(viewsets.ModelViewSet):
     serializer_class = CampaignSerializer
     queryset = Campaign.objects.all()
 
+class NearestNgoView(APIView):
+    permission_classes = [AllowAny]
+
+    def get_data(self, serializer):
+        info = serializer.data
+        data = info.pop('user') | info
+        return data
+    
+    def get(self, request):
+        lat = float(request.query_params.get('lat'))
+        lon = float(request.query_params.get('lon'))
+
+        ngos = NgoUser.objects.all()
+        min_distance = None
+        nearest_ngo = None
+        for ngo in ngos:
+            dlon = radians(ngo.longitude) - radians(lon)
+            dlat = radians(ngo.latitude) - radians(lat)
+            a = sin(dlat / 2)**2 + cos(radians(lat)) * cos(radians(ngo.latitude)) * sin(dlon / 2)**2
+            c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            distance = 6371.01 * c
+            if min_distance is None or distance < min_distance:
+                min_distance = distance
+                nearest_ngo = ngo
+
+        if nearest_ngo is not None:
+            return Response(self.get_data(NgoUserSerializer(nearest_ngo)))
+        else:
+            return Response({
+                'error': 'No NGOs found',
+            })
+        
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
