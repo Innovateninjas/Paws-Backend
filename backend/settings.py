@@ -31,14 +31,15 @@ DATABASES = {
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ['127.0.0.1', 'pawss.vercel.app', 'aniresfr.vercel.app', 'aniresfr-rishi-04.vercel.app', '.vercel.app' , 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'aniresfr-git-fork-codewarnab-main-rishi-04.vercel.app', 'pawss.vercel.app', 'aniresfr.vercel.app', 'aniresfr-rishi-04.vercel.app', '.vercel.app' , 'localhost']
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://aniresfr.vercel.app',
     'https://aniresfr-rishi-04.vercel.app',
-    'https://pawss.vercel.app'
+    'https://pawss.vercel.app',
+    'https://aniresfr-git-fork-codewarnab-main-rishi-04.vercel.app'
 ]
 # Application definition
 
