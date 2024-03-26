@@ -60,6 +60,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://paws-backend.azurewebsites.net',
     'https://paws-backend.scm.azurewebsites.net',
 ]
+CSRF_TRUSTED_ORIGINS=['https://paws-backend.azurewebsites.net']
 # Application definition
 CSRF_COOKIE_DOMAIN = '.azurewebsites.net'
 
