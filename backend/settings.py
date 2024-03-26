@@ -56,7 +56,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://aniresfr-rishi-04.vercel.app',
     'https://pawss.vercel.app',
     'https://aniresfr-git-fork-codewarnab-main-rishi-04.vercel.app',
-    'https://paws-backend.azurewebsites.net'
+    'https://paws-backend.azurewebsites.net',
 ]
 # Application definition
 
