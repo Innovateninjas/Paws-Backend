@@ -57,9 +57,11 @@ CORS_ALLOWED_ORIGINS = [
     'https://pawss.vercel.app',
     'https://aniresfr-git-fork-codewarnab-main-rishi-04.vercel.app',
     'https://paws-backend.azurewebsites.net',
+    'https://paws-backend.azurewebsites.net',
     'https://paws-backend.scm.azurewebsites.net',
 ]
 # Application definition
+CSRF_COOKIE_DOMAIN = '.azurewebsites.net'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
