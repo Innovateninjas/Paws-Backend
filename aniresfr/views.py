@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets
 from .serializers import *
 from .models import *
+from notify import send_notification
 
 
 def get_token(user):
@@ -29,6 +30,16 @@ class AnimalView(viewsets.ModelViewSet):
         if assigned_to is not None:
             queryset = queryset.filter(assigned_to=assigned_to)
         return queryset
+    
+    def partial_update(self, request, *args, **kwargs):
+        response = super().partial_update(request, *args, **kwargs)
+        if request.data.get('status') != 'Received':
+            user = BaseUser.objects.get(email=request.data.get('user_email'))
+            if request.data.get('status') == 'Rescued':
+                send_notification([user.notify_token], 'Animal Rescued', 'Your Report has been resolved.')
+            if request.data.get('status') == 'In Progress':
+                send_notification([user.notify_token], 'Ngo on the Way', 'Your Report is being worked on.')
+        return response
 
 
 class CampaignView(viewsets.ModelViewSet):

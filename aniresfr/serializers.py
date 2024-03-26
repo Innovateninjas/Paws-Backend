@@ -35,7 +35,7 @@ class AnimalSerializer(serializers.ModelSerializer):
             nearest_ngo.no_received_reports = F('no_received_reports') + 1
             nearest_ngo.save(update_fields=['no_received_reports'])
             animal.save()
-            send_notification([nearest_ngo.user.notify_token], 'New Animal Report', 'A new animal report has been made near you.')
+            send_notification([nearest_ngo.user.notify_token], 'New Report', 'A new report has been made near you.')
         return animal
 
 
@@ -50,7 +50,7 @@ class CampaignSerializer(serializers.ModelSerializer):
         campaign = Campaign.objects.create(**validated_data)
         users = CustomUser.objects.all()
         registration_tokens = [user.user.notify_token for user in users if user.user.notify_token]
-        send_notification(registration_tokens, 'New Campaign', 'A new campaign has been created.')
+        send_notification(registration_tokens, 'New Campaign', 'participate in :'+campaign.title+' campaign.')
         return campaign
 
 class BaseUserSerializer(serializers.ModelSerializer):
