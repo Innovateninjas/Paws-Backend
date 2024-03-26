@@ -88,7 +88,16 @@ class LogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
-    
+
+
+class UpdateNotifyTokenView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        token = request.data.get("token")
+        user = request.user
+        user.notify_token = token
+        user.save()
+        return Response({"message": "Token updated successfully"}, status=status.HTTP_200_OK)
 
 class ChangePasswordView(APIView):
     permission_classes = [AllowAny]

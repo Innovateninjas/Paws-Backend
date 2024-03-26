@@ -48,7 +48,7 @@ class CampaignSerializer(serializers.ModelSerializer):
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['email', 'name', 'phone_number', 'is_ngo', 'date_joined']
+        fields = ['email', 'name', 'phone_number', 'is_ngo', 'date_joined', 'notify_token']
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
