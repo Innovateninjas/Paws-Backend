@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets
 from .serializers import *
 from .models import *
-from notify import send_notification
+from .notify import send_notification
 
 
 def get_token(user):
