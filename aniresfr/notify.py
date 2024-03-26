@@ -7,6 +7,7 @@ def send_notification(notify_list=[], title='title', body='body'):
         notification=messaging.Notification(
             title=title,
             body=body,
+            image="https://pawss.vercel.app/logo512.png"
         ),
         tokens=notify_list,
     )
