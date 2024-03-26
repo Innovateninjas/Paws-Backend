@@ -17,7 +17,7 @@ class CampaignAdmin(admin.ModelAdmin):
 
 class BaseUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'phone_number', 'is_ngo', 'is_active', 
-                    'is_staff', 'is_superuser', 'date_joined')
+                    'is_staff', 'is_superuser', 'date_joined', 'notify_token')
     search_fields = ['email', 'name', 'phone_number']
 
 class NgoUserAdmin(admin.ModelAdmin):

@@ -3,6 +3,7 @@ from django.db.models import F
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from math import radians, cos, sin, sqrt, atan2
+from .notify import send_notification
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -34,6 +35,7 @@ class AnimalSerializer(serializers.ModelSerializer):
             nearest_ngo.no_received_reports = F('no_received_reports') + 1
             nearest_ngo.save(update_fields=['no_received_reports'])
             animal.save()
+            send_notification([nearest_ngo.user.notify_token], 'New Animal Report', 'A new animal report has been made near you.')
         return animal
 
 
@@ -43,7 +45,13 @@ class CampaignSerializer(serializers.ModelSerializer):
         fields = ['ngo_name', 'title', 'description', 'tags', 'phone_number', 
                   'email', 'start_date', 'end_date', 'application_deadline', 
                   'age_group', 'image_link', 'is_over', 'campaign_id', 'applicant_list']
-
+        
+    def create(self, validated_data):
+        campaign = Campaign.objects.create(**validated_data)
+        users = CustomUser.objects.all()
+        registration_tokens = [user.user.notify_token for user in users if user.user.notify_token]
+        send_notification(registration_tokens, 'New Campaign', 'A new campaign has been created.')
+        return campaign
 
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
