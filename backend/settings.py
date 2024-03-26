@@ -47,7 +47,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 cred = credentials.Certificate(fb_cred)
 FIREBASE_APP = initialize_app(cred)
 
-ALLOWED_HOSTS = ['paws-backend.azurewebsites.net', '127.0.0.1', 'aniresfr-git-fork-codewarnab-main-rishi-04.vercel.app', 'pawss.vercel.app', 'aniresfr.vercel.app', 'aniresfr-rishi-04.vercel.app', '.vercel.app' , 'localhost']
+ALLOWED_HOSTS = ['paws-backend.azurewebsites.net', '127.0.0.1', 'aniresfr-git-fork-codewarnab-main-rishi-04.vercel.app', 'pawss.vercel.app', 'aniresfr.vercel.app', 'aniresfr-rishi-04.vercel.app', '.azurewebsites.net', '.vercel.app' , 'localhost']
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
