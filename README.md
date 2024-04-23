@@ -1,4 +1,6 @@
+**for detailed readme checkout [Paws-Frontend](https://github.com/Innovateninjas/Paws-frontend)
 
+for setup check out contribution.md
 
 ## Setup and Installation
 clone the repo
