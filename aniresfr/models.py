@@ -64,6 +64,8 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     notify_token = models.CharField(max_length=200, default='')
+    profile_image = models.CharField(max_length=200 , default='')
+
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['name', 'phone_number']

@@ -286,3 +286,22 @@ class NgoUserRegistration(APIView):
             return Response({'token': get_token(user.user)}, status=status.HTTP_201_CREATED)
         except IntegrityError:
             raise ValidationError({'error': 'The account with that Email already exists. Please Login.'})
+
+
+class UploadProfilePhoto(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get("email")
+        profile_image = request.data.get("profile_image")
+        
+
+        try:
+            user = BaseUser.objects.get(email=email)
+        except BaseUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        user.profile_image = profile_image
+        user.save()
+
+        return Response({"message": "profile upload successfully"}, status=status.HTTP_200_OK)
