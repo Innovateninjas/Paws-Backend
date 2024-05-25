@@ -152,6 +152,6 @@ cython_debug/
 #.idea/
 test.py
 *.json
-scccccccccccccrrrrrrrrraaaaaaaaaapeeeeee.py
+*/migrations/*
 UART.py
 SCP.py
