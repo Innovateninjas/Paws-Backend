@@ -38,6 +38,5 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('profile/', views.UploadProfilePhoto.as_view() , name='upload profile'),
-
+    path('profile/', views.UpdateProfileInfo.as_view() , name='update profile info'),
 ]
