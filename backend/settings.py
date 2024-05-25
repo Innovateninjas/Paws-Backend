@@ -68,9 +68,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 if RUNNING_DEVSERVER or DEBUG:
     print("Running on dev server")
-    ALLOWED_HOSTS += ['*']  # Wildcard for any IP
-    CORS_ALLOWED_ORIGINS += ['*']  # Wildcard for any origin
-    CSRF_TRUSTED_ORIGINS += ['*']  # Wildcard for any origin
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']  # Localhost for development
+    CORS_ALLOWED_ORIGINS += ['http://localhost:8000', 'http://127.0.0.1:8000']  # Localhost for development
+    CSRF_TRUSTED_ORIGINS += ['http://localhost:8000', 'http://127.0.0.1:8000']  # Localhost for development
 
 # Application definition
 
@@ -161,7 +161,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
+STATIC_ROOT = 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = 'static/'
 
 # Default primary key field type
