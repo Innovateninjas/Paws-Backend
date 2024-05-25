@@ -68,9 +68,15 @@ CSRF_TRUSTED_ORIGINS = [
 
 if RUNNING_DEVSERVER or DEBUG:
     print("Running on dev server")
-    ALLOWED_HOSTS += ['localhost', '127.0.0.1']  # Localhost for development
-    CORS_ALLOWED_ORIGINS += ['http://localhost:8000', 'http://127.0.0.1:8000']  # Localhost for development
-    CSRF_TRUSTED_ORIGINS += ['http://localhost:8000', 'http://127.0.0.1:8000']  # Localhost for development
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
+    CORS_ALLOWED_ORIGINS += ['http://localhost:8000',
+                             'http://127.0.0.1:8000',
+                             'http://localhost:3000',
+                             'http://127.0.0.1:3000']
+    CSRF_TRUSTED_ORIGINS += ['http://localhost:8000',
+                             'http://127.0.0.1:8000',
+                             'http://localhost:3000',
+                             'http://127.0.0.1:3000']
 
 # Application definition
 
